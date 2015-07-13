@@ -32,14 +32,14 @@ Playbook
 
 Running playbook
 ----------------
-#1 clone this repo
+###1 clone this repo
 ```fish
 git clone https://github.com/veggiemonk/ansible-ohmyzsh
 ```
 
-#2 put the playbook at the level at the repository you just cloned
+###2 put the playbook at the same level at the repository you just cloned
 
-#3 run playbook
+###3 run playbook
 - `ansible-playbook --inventory 'localhost,' -a -u LOCAL_USERNAME playbook.yml`
 
 Make sur you can connect to localhost by ssh.
