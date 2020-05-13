@@ -2,23 +2,26 @@
 - name: Installing Zsh and git
   apt: pkg=zsh,git state=latest
   register: installation
+  become: true
 
-- name: Backing up existing ~/.zshrc
-  shell: if [ -f ~/.zshrc ]; then mv ~/.zshrc{,.orig}; fi
-  when: installation|success
-  sudo: no
+- name: Check if .zshrc exists
+  stat:
+    path: ~/.zshrc
+  register: stat_rc_result
+
+- name: Check if .oh-my-zsh exists
+  stat:
+    path: ~/.oh-my-zsh
+  register: stat_oh_my_zsh_result
 
 - name: Cloning  oh-my-zsh
   git:
     repo=https://github.com/robbyrussell/oh-my-zsh
     dest=~/.oh-my-zsh
-  when: installation|success
-  register: cloning
-  sudo: no
+  when: not stat_oh_my_zsh_result.stat.exists
 
 - name: Creating new ~/.zshrc
   copy:
     src=~/.oh-my-zsh/templates/zshrc.zsh-template
     dest=~/.zshrc
-  when: cloning|success
-  sudo: no
+  when: not stat_rc_result.stat.exists
